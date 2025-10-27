@@ -330,6 +330,7 @@ function ResultsOverview({
 }
 
 // Semester Results Component
+// Semester Results Component
 function SemesterResultsView({ 
   semesterResults, 
   onBack,
@@ -347,7 +348,24 @@ function SemesterResultsView({
     );
   }
 
-  const { semester, courses, summary } = semesterResults;
+  const { semester, courses } = semesterResults;
+
+  // Calculate summary from courses
+  const calculateGPA = (courses: any[]): number => {
+    if (!courses.length) return 0;
+    
+    const totalQualityPoints = courses.reduce((sum, course) => sum + (course.qualityPoints || 0), 0);
+    const totalCredits = courses.reduce((sum, course) => sum + (course.creditUnits || 0), 0);
+    
+    return totalCredits > 0 ? totalQualityPoints / totalCredits : 0;
+  };
+
+  const summary = {
+    gpa: calculateGPA(courses),
+    totalCourses: courses.length,
+    totalCredits: courses.reduce((sum, course) => sum + course.creditUnits, 0),
+    totalQualityPoints: courses.reduce((sum, course) => sum + course.qualityPoints, 0)
+  };
 
   return (
     <div className="space-y-6">
@@ -386,7 +404,7 @@ function SemesterResultsView({
             </thead>
             <tbody className="divide-y divide-gray-200">
               {courses.map((course, index) => (
-                <tr key={course._id} className="hover:bg-gray-50">
+                <tr key={course._id || index} className="hover:bg-gray-50">
                   <td className="px-4 py-3">
                     <div>
                       <p className="font-medium text-gray-900 text-sm">{course.courseCode}</p>
@@ -399,12 +417,12 @@ function SemesterResultsView({
                       {course.grade}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-center text-gray-900 text-sm">{course.gradePoint.toFixed(1)}</td>
+                  <td className="px-4 py-3 text-center text-gray-900 text-sm">{course.gradePoint?.toFixed(1) || '0.0'}</td>
                   <td className="px-4 py-3 text-center text-emerald-600 font-medium text-sm">
-                    {course.qualityPoints.toFixed(1)}
+                    {course.qualityPoints?.toFixed(1) || '0.0'}
                   </td>
                   <td className="px-4 py-3 text-center text-gray-600 text-xs">
-                    {course.lecturer}
+                    {course.lecturer || 'N/A'}
                   </td>
                 </tr>
               ))}
@@ -438,7 +456,6 @@ function SemesterResultsView({
     </div>
   );
 }
-
 // Transcript View Component
 function TranscriptView({ 
   transcript, 
