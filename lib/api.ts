@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://uniport-buddy-backend.onrender.com/api';
 
 const api = axios.create({
   baseURL: API_URL,
@@ -9,7 +9,7 @@ const api = axios.create({
   },
 });
 
-// Add token to requests
+
 api.interceptors.request.use((config) => {
   if (typeof window !== 'undefined') {
     const token = localStorage.getItem('token');
@@ -20,7 +20,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Handle responses
+
 api.interceptors.response.use(
   (response) => response,
   (error) => {
