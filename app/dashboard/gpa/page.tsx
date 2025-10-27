@@ -379,9 +379,9 @@ function GPACalculatorView({
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-xs sm:text-sm text-gray-600">Credits:</span>
-                    <span className="font-medium text-gray-900 text-sm sm:text-base">{semester.credits}</span>
-                  </div>
+  <span className="text-xs sm:text-sm text-gray-600">Credits:</span>
+  <span className="font-medium text-gray-900 text-sm sm:text-base">{semester.totalCredits}</span>
+</div>
                   <div className="flex justify-between items-center">
                     <span className="text-xs sm:text-sm text-gray-600">Courses:</span>
                     <span className="font-medium text-gray-900 text-sm sm:text-base">{semester.courses.length}</span>
